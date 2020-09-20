@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Daily Smarts</string>
+    <string name="refresh">Refresh</string>
+    <string name="daily_quote">Daily Quote</string>
+    <string name="my_quotes">My Quotes</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="sample_qoute_text">This is a random text, do not misuse it</string>
+    <string name="author">John Doe</string>
+</resources>

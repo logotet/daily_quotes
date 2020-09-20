@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/margin_big"
+    android:background="@color/colorAccent"
+    android:orientation="vertical"
+    app:cardCornerRadius="@dimen/card_corner">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/txt_qoute"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_medium"
+            android:text="@string/sample_qoute_text"
+            android:textSize="@dimen/text_huge" />
+
+        <TextView
+            android:id="@+id/txt_author"
+            android:textSize="@dimen/text_large"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txt_qoute"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="@dimen/margin_big"
+            android:text="@string/author" />
+
+        <ImageView
+            android:id="@+id/btn_fav"
+            android:layout_width="@dimen/size_heart"
+            android:layout_height="@dimen/size_heart"
+            android:layout_below="@id/txt_qoute"
+            android:layout_margin="@dimen/margin_medium"
+            android:src="@drawable/ic_favorite_border_black_24px" />
+
+        <ImageView
+            android:id="@+id/btn_share"
+            android:layout_width="@dimen/size_heart"
+            android:layout_height="@dimen/size_heart"
+            android:layout_below="@id/txt_qoute"
+            android:layout_margin="@dimen/margin_medium"
+            android:layout_toEndOf="@id/btn_fav"
+            android:src="@drawable/ic_share_black_24px" />
+
+
+    </RelativeLayout>
+
+
+</androidx.cardview.widget.CardView>
