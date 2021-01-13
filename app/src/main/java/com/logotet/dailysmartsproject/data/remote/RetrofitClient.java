@@ -20,7 +20,7 @@ public class RetrofitClient {
 
     private RetrofitClient() {
         retrofit = new Retrofit.Builder()
-                .baseUrl("https://quote-garden.herokuapp.com/api/v2/quotes/")
+                .baseUrl("https://api.quotable.io/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
     }

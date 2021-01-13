@@ -7,6 +7,4 @@ public interface QuoteService {
 
     @GET("random")
     Call<QuoteModel> getRandomQuote();
-
-
 }

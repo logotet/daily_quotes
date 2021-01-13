@@ -20,8 +20,6 @@ public class MainActivity extends AppCompatActivity implements DailyQouteFragmen
 
     public static final String DAILY_QOUTE = "Daily Qoute";
     public static final String MY_QOUTES = "My Qoutes";
-    MyQoutesFragment myQoutesFragment;
-    DailyQouteFragment dailyQouteFragment;
     ActivityMainBinding binding;
     MenuListener menuListener;
 

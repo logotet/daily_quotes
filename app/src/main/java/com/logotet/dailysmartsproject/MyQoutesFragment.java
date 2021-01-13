@@ -26,15 +26,6 @@ import com.logotet.dailysmartsproject.databinding.FragmentMyQoutesBinding;
 import java.util.ArrayList;
 import java.util.List;
 
-
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link OnMyQouteInteractionListener} interface
- * to handle interaction events.
- * Use the {@link MyQoutesFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class MyQoutesFragment extends Fragment {
 
 
@@ -43,14 +34,6 @@ public class MyQoutesFragment extends Fragment {
     private List<Quote> quotes = new ArrayList<>();
     private List<QuoteEntity> quoteEntities;
     private DatabaseClient dbi;
-
-    public static MyQoutesFragment newInstance(String param1, String param2) {
-        MyQoutesFragment fragment = new MyQoutesFragment();
-        Bundle args = new Bundle();
-        // TODO: Add parameters
-        fragment.setArguments(args);
-        return fragment;
-    }
 
 
     @Override
@@ -109,7 +92,7 @@ public class MyQoutesFragment extends Fragment {
     private void deleteQuoteFromList(Quote item) {
         dbi.deleteSingleQuote(item.getText());
         int position = quotes.indexOf(item);
-        //TODO: The following 3 lines keep the app from crashin but will delete not the right quote!
+        //TODO: The following 3 lines keep the app from crashing but will delete not the right quote!
         if(position < 0){
             position +=1;
         }

@@ -9,15 +9,12 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.logotet.dailysmartsproject.MainActivity.MenuListener;
 import com.logotet.dailysmartsproject.adapters.Quote;
 import com.logotet.dailysmartsproject.adapters.QuoteAdapter;
 import com.logotet.dailysmartsproject.data.local.DatabaseClient;
@@ -31,20 +28,12 @@ import java.util.List;
 
 
 public class DailyQouteFragment extends Fragment  {
-//    // TODO: Rename parameter arguments, choose names that match
-//    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-//    private static final String ARG_PARAM1 = "param1";
-//    private static final String ARG_PARAM2 = "param2";
-//
-//    // TODO: Rename and change types of parameters
-//    private String mParam1;
-//    private String mParam2;
+
 
     private OnDailyQouteInteractionListener mListener;
 
     FragmentDailyQouteBinding binding;
 
-    private TextView txtFr1;
     private RetrofitClient retrofitClient;
     private List<Quote> quotes = new ArrayList<>();
     private DatabaseClient dbi;
@@ -53,14 +42,6 @@ public class DailyQouteFragment extends Fragment  {
     private String author = "";
 
 
-    public static DailyQouteFragment newInstance(String param1, String param2) {
-        DailyQouteFragment fragment = new DailyQouteFragment();
-//        Bundle args = new Bundle();
-//        args.putString(ARG_PARAM1, param1);
-//        args.putString(ARG_PARAM2, param2);
-//        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -98,12 +79,9 @@ public class DailyQouteFragment extends Fragment  {
             }
         });
 
-        binding.swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                retrofitClient.getQuote(getContext(), quoteModel -> DailyQouteFragment.this.addQuote(quoteModel, adapter));
-                binding.swiperefresh.setRefreshing(false);
-            }
+        binding.swiperefresh.setOnRefreshListener(() -> {
+            retrofitClient.getQuote(getContext(), quoteModel -> DailyQouteFragment.this.addQuote(quoteModel, adapter));
+            binding.swiperefresh.setRefreshing(false);
         });
 
 
@@ -135,8 +113,10 @@ public class DailyQouteFragment extends Fragment  {
     }
 
     private void addQuote(QuoteModel quoteModel, QuoteAdapter adapter) {
-        text = quoteModel.getQuote().getQuoteText();
-        author = quoteModel.getQuote().getQuoteAuthor();
+//        text = quoteModel.getQuote().getContent();
+//        author = quoteModel.getQuote().getAuthor();
+        text = quoteModel.getContent();
+        author = quoteModel.getAuthor();
         Quote quoteData = new Quote();
         quoteData.setText(text);
         quoteData.setAuthor(author);
@@ -162,10 +142,7 @@ public class DailyQouteFragment extends Fragment  {
         mListener = null;
     }
 
-//    @Override
-//    public void onMenuClicked() {
-//
-//    }
+
 
 
     public interface OnDailyQouteInteractionListener {
