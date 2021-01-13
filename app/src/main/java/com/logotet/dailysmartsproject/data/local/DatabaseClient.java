@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
@@ -37,14 +38,11 @@ public class DatabaseClient {
         return client;
     }
 
-    public void insertQuote(String quoteText, String author) {
-
-        QuoteEntity entity = new QuoteEntity(author, quoteText);
+    public void insertQuote(QuoteEntity entity) {
         db.quoteDao().insertQuote(entity);
-
     }
 
-    public QuoteEntity displayQuote(String quoteText) {
+    public LiveData<QuoteEntity> displayQuote(String quoteText) {
         return db.quoteDao().getQuoteByText(quoteText);
     }
 
@@ -57,7 +55,7 @@ public class DatabaseClient {
     }
 
 
-    public List<QuoteEntity> getAllQuotes() {
+    public LiveData<List<QuoteEntity>> getAllQuotes() {
         return db.quoteDao().getAllQuotes();
     }
 

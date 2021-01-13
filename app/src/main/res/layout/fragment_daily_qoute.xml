@@ -7,7 +7,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".DailyQouteFragment"
+        tools:context=".ui.DailyQouteFragment"
         android:id="@+id/frg_daily_quotes"
         android:tag="daily_quotes"
         android:background="#fff">

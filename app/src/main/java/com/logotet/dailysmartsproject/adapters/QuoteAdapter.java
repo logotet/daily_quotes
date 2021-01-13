@@ -23,6 +23,11 @@ public class QuoteAdapter extends RecyclerView.Adapter<QuoteAdapter.QuoteHolder>
         this.listener = listener;
     }
 
+    public void updateData(List<Quote> quoteList){
+        quotes = quoteList;
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public QuoteHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

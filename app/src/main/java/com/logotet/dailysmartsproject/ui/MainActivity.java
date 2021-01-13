@@ -1,9 +1,8 @@
-package com.logotet.dailysmartsproject;
+package com.logotet.dailysmartsproject.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager.widget.ViewPager;
 
 import android.net.Uri;
@@ -12,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.logotet.dailysmartsproject.R;
 import com.logotet.dailysmartsproject.adapters.ViewPagerAdapter;
 import com.logotet.dailysmartsproject.data.local.QuoteEntity;
 import com.logotet.dailysmartsproject.databinding.ActivityMainBinding;

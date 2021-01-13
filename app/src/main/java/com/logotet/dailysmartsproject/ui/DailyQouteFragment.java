@@ -1,4 +1,4 @@
-package com.logotet.dailysmartsproject;
+package com.logotet.dailysmartsproject.ui;
 
 import android.content.Context;
 import android.content.Intent;
@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.logotet.dailysmartsproject.R;
 import com.logotet.dailysmartsproject.adapters.Quote;
 import com.logotet.dailysmartsproject.adapters.QuoteAdapter;
 import com.logotet.dailysmartsproject.data.local.DatabaseClient;
@@ -22,6 +24,7 @@ import com.logotet.dailysmartsproject.data.local.QuoteEntity;
 import com.logotet.dailysmartsproject.data.remote.QuoteModel;
 import com.logotet.dailysmartsproject.data.remote.RetrofitClient;
 import com.logotet.dailysmartsproject.databinding.FragmentDailyQouteBinding;
+import com.logotet.dailysmartsproject.ui.models.DailyQuoteFragmentViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,11 +35,11 @@ public class DailyQouteFragment extends Fragment  {
 
     private OnDailyQouteInteractionListener mListener;
 
-    FragmentDailyQouteBinding binding;
+    private FragmentDailyQouteBinding binding;
 
-    private RetrofitClient retrofitClient;
+    private DailyQuoteFragmentViewModel viewModel;
+
     private List<Quote> quotes = new ArrayList<>();
-    private DatabaseClient dbi;
     private Quote quote = new Quote();
     private String text = "";
     private String author = "";
@@ -64,23 +67,19 @@ public class DailyQouteFragment extends Fragment  {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        retrofitClient = RetrofitClient.getInstance();
-        dbi = DatabaseClient.getInstance(getContext());
+        viewModel = new ViewModelProvider(this).get(DailyQuoteFragmentViewModel.class);
+
         quotes.add(quote);
 
         QuoteAdapter adapter = new QuoteAdapter(quotes, getQuoteInteractionListener());
         binding.recViewDaily.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.recViewDaily.setAdapter(adapter);
 
-        retrofitClient.getQuote(getContext(), new RetrofitClient.DataListener() {
-            @Override
-            public void onDataReceived(QuoteModel quoteModel) {
-                DailyQouteFragment.this.addQuote(quoteModel, adapter);
-            }
-        });
+        viewModel.getRandomQuote(quoteModel -> DailyQouteFragment.this.addQuote(quoteModel, adapter));
+
 
         binding.swiperefresh.setOnRefreshListener(() -> {
-            retrofitClient.getQuote(getContext(), quoteModel -> DailyQouteFragment.this.addQuote(quoteModel, adapter));
+            viewModel.getRandomQuote(quoteModel -> DailyQouteFragment.this.addQuote(quoteModel, adapter));
             binding.swiperefresh.setRefreshing(false);
         });
 
@@ -93,8 +92,8 @@ public class DailyQouteFragment extends Fragment  {
             public void onFavButtonClicked(Quote item) {
                 String text = item.getText();
                 String author = item.getAuthor();
-                QuoteEntity entity = new QuoteEntity(text, author);
-                dbi.insertQuote(text, author);
+                QuoteEntity entity = new QuoteEntity(author, text);
+                viewModel.insertQuote(entity);
                 Toast.makeText(getContext(), "Quote inserted", Toast.LENGTH_LONG).show();
                 mListener.onDailyQuotesInteraction(entity);
             }
@@ -113,8 +112,6 @@ public class DailyQouteFragment extends Fragment  {
     }
 
     private void addQuote(QuoteModel quoteModel, QuoteAdapter adapter) {
-//        text = quoteModel.getQuote().getContent();
-//        author = quoteModel.getQuote().getAuthor();
         text = quoteModel.getContent();
         author = quoteModel.getAuthor();
         Quote quoteData = new Quote();

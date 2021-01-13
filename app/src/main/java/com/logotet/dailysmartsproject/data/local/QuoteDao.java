@@ -1,5 +1,6 @@
 package com.logotet.dailysmartsproject.data.local;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -14,18 +15,18 @@ public interface QuoteDao {
     void insertQuote(QuoteEntity quoteEntity);
 
     @Query("SELECT * FROM quotes")
-    List<QuoteEntity> getAllQuotes();
+    LiveData<List<QuoteEntity>> getAllQuotes();
 
     @Query("DELETE FROM quotes WHERE quote_text = :quoteText")
-     void deleteByText(String quoteText);
+    void deleteByText(String quoteText);
 
     @Query("SELECT * FROM quotes WHERE quote_text LIKE :quoteText")
-    QuoteEntity getQuoteByText(String quoteText);
+    LiveData<QuoteEntity> getQuoteByText(String quoteText);
 
     @Delete
     void deleteQuote(QuoteEntity quoteEntity);
 
     @Delete
-    void deleteAll(QuoteEntity...entities);
+    void deleteAll(QuoteEntity... entities);
 
 }

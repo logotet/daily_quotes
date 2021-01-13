@@ -1,4 +1,4 @@
-package com.logotet.dailysmartsproject;
+package com.logotet.dailysmartsproject.ui;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +10,8 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.view.LayoutInflater;
@@ -17,23 +19,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.logotet.dailysmartsproject.R;
 import com.logotet.dailysmartsproject.adapters.Quote;
 import com.logotet.dailysmartsproject.adapters.QuoteAdapter;
 import com.logotet.dailysmartsproject.data.local.DatabaseClient;
 import com.logotet.dailysmartsproject.data.local.QuoteEntity;
 import com.logotet.dailysmartsproject.databinding.FragmentMyQoutesBinding;
+import com.logotet.dailysmartsproject.ui.models.DailyQuoteFragmentViewModel;
+import com.logotet.dailysmartsproject.ui.models.MyQuotesFragmentViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MyQoutesFragment extends Fragment {
 
-
+    private MyQuotesFragmentViewModel viewModel;
     private OnMyQouteInteractionListener mListener;
     private FragmentMyQoutesBinding binding;
     private List<Quote> quotes = new ArrayList<>();
-    private List<QuoteEntity> quoteEntities;
-    private DatabaseClient dbi;
+//    private List<QuoteEntity> quoteEntitiesList = new ArrayList<>();
 
 
     @Override
@@ -48,10 +52,20 @@ public class MyQoutesFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        dbi = DatabaseClient.getInstance(getContext());
-        getQuotesFromLocalDB();
+        viewModel = new ViewModelProvider(this).get(MyQuotesFragmentViewModel.class);
 
         QuoteAdapter adapter = new QuoteAdapter(quotes, getQuoteInteractionListener());
+
+        viewModel.getQuotesFromLocalDB().observe(getViewLifecycleOwner(), quoteEntities -> {
+            for (int i = 0; i < quoteEntities.size(); i++) {
+                QuoteEntity entity = quoteEntities.get(i);
+                Quote quote = new Quote();
+                quote.setText(entity.getQuoteText());
+                quote.setAuthor(entity.getAuthor());
+                quotes.add(0, quote);
+            }
+            adapter.updateData(quotes);
+        });
 
         binding.recViewMyQuotes.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.recViewMyQuotes.setAdapter(adapter);
@@ -78,23 +92,13 @@ public class MyQoutesFragment extends Fragment {
         };
     }
 
-    private void getQuotesFromLocalDB() {
-        quoteEntities = dbi.getAllQuotes();
-        for (int i = 0; i < quoteEntities.size(); i++) {
-            QuoteEntity entity = quoteEntities.get(i);
-            Quote quote = new Quote();
-            quote.setText(entity.getQuoteText());
-            quote.setAuthor(entity.getAuthor());
-            quotes.add(0, quote);
-        }
-    }
 
     private void deleteQuoteFromList(Quote item) {
-        dbi.deleteSingleQuote(item.getText());
+        viewModel.deleteQuoteFromDb(item.getText());
         int position = quotes.indexOf(item);
         //TODO: The following 3 lines keep the app from crashing but will delete not the right quote!
-        if(position < 0){
-            position +=1;
+        if (position < 0) {
+            position += 1;
         }
         quotes.remove(position);
         binding.recViewMyQuotes.getAdapter().notifyItemRemoved(position);
@@ -102,7 +106,7 @@ public class MyQoutesFragment extends Fragment {
 
 
     public void updateMyQuotesList(QuoteEntity entity) {
-        if(entity != null) {
+        if (entity != null) {
             Quote quote = new Quote();
             quote.setText(entity.getQuoteText());
             quote.setAuthor(entity.getAuthor());

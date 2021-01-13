@@ -6,7 +6,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".MyQoutesFragment"
+        tools:context=".ui.MyQoutesFragment"
         android:id="@+id/frg_my_quotes"
         android:background="#fff">
 
