@@ -7,3 +7,5 @@ Java
 Retrofit2
 Room
 Live Data;
+
+![](daily_quotes/screenshot1.jpg)
