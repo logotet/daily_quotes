@@ -8,4 +8,6 @@ Retrofit2
 Room
 Live Data;
 
-![](daily_quotes/screenshot1.jpg)
+![screenshot1](https://user-images.githubusercontent.com/23497123/108982878-f0ad6700-7696-11eb-9b89-9aa1ff2f2855.jpg)  ![screenshot2](https://user-images.githubusercontent.com/23497123/108982980-0c187200-7697-11eb-803c-cb9a75de3ea5.jpg)
+
+
